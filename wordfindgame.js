@@ -9,6 +9,9 @@
 (function (document, $, wordfind) {
   'use strict';
 
+  var bugout = new debugout();
+  self.logFilename = 'log.txt';
+
   /**
   * An example game using the puzzles created from wordfind.js. Click and drag
   * to highlight words.
@@ -242,6 +245,49 @@
       curWord = '';
       curOrientation = null;
     };
+
+    jQuery(function($){
+      $('#startClock').on('click', doCount);
+    });
+
+    function doCount(){
+      console.log(document.getElementById("count"))
+        var input = document.getElementById("count");//.value//300;
+        var counter = input.innerHTML
+        // console.log(counter.innerHTML)
+        setInterval(function() {
+            console.log("JUJUJUJUJUJ")
+            console.log(wordList)
+            console.log(counter)
+            if(wordList.length === 0) {
+              clearInterval(counter);
+              document.getElementById('id01').style.display='block'
+              bugout.log('some object or string');
+              bugout.downloadLog()
+
+            } else {
+                counter--;
+                if (counter >= 0) {
+                  document.getElementById("count").textContent=counter;
+                }
+                if (counter === 0) {
+                    clearInterval(counter);
+                    document.getElementById('id02').style.display='block'
+                }
+            }
+        }, 1000);
+    }
+
+    function WriteFile() {
+      var fh = fopen("c:\\MyFile.txt", 3); // Open the file for writing
+
+      if(fh!=-1) // If the file has been successfully opened
+      {
+          var str = "Some text goes here...";
+          fwrite(fh, str); // Write the string to a file
+          fclose(fh); // Close the file 
+      }
+    }
 
     /* Constructor START */
     $('input.word').removeClass('wordFound');

@@ -23,6 +23,8 @@ h1 {
   margin: 0 auto;
   max-width: 80rem;
   text-align: center; /* to center #puzzle on small devices */
+  display: flex;
+  justify-content: center;
 }
 @media only screen and (min-width: 600px) {
   #main {

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Word Find</title>
+    <link rel="stylesheet" type="text/css" href="wordfind.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script type="text/javascript" src="debugout.js"></script>
+
+<body>
+<h1>WordFind.js</h1>
+    <div id="main" role="main">
+        <div id="puzzle"></div>
+        <ul id="words">
+            <li><button id="add-word">Add word</button></li>
+        </ul>
+    </div>
+    <br>
+    <div id="main" >
+        <span id="count">10</span> seconds
+        <button href="#" id="startClock" type="button" class=" btn btn-success startButton">Start</button>
+    </div>
+
+    <div id="id01" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <br>
+            <br>
+            <p>Congratulations, you completed the puzzle. Press OK to move on to the next one."</p>
+            <br>
+            <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a>
+
+            <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
+            </div>
+        </div>
+    </div>
+
+    <div id="id02" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <br>
+            <br>
+            <p>Sorry, time ran out for the puzzle. Press OK to move on to the next one."</p>
+            <br>
+            <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a>
+
+            <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="wordfind.js"></script> 
+    <script type="text/javascript" src="wordfindgame.js"></script> 
+
+    <script>
+
+
+    /* Example words setup */
+    [
+        'dig',
+        'grind',
+        'try'
+    ].map(word => WordFindGame.insertWordBefore($('#add-word').parent(), word));
+    $('#secret-word').val('LAETIRSNJKNUGYHJ');
+
+    /* Init */
+    function recreate() {
+        $('#result-message').removeClass();
+        var fillBlanks, game;
+        // if ($('#extra-letters').val() === 'none') {
+        //     fillBlanks = false;
+        // } else if ($('#extra-letters').val().startsWith('secret-word')) {
+            fillBlanks = $('#secret-word').val();
+        // }
+        $('#add-word').css('display', 'none')
+        $('#words').css('display', 'none')
+        try {
+            // var puzzle = [[F, H, D, E, D],
+	        //           [N, U, Y, K, K],
+            //           [D, N, I, R, G],
+            //           [K, U, F, J, T],
+            //           [H, K, J, L, L]
+            //         ]
+            // game = new WordFindGame(puzzle, {
+            //     allowedMissingWords: +0,//$('#allowed-missing-words').val(),
+            //     maxGridGrowth: +2,//+$('#max-grid-growth').val(),
+            //     fillBlanks: fillBlanks,
+            //     allowExtraBlanks: ['none', 'secret-word-plus-blanks'].includes($('#extra-letters').val()),
+            //     maxAttempts: 100,
+            // });
+            game = new WordFindGame('#puzzle', {
+                allowedMissingWords: +0,//$('#allowed-missing-words').val(),
+                maxGridGrowth: +2,//+$('#max-grid-growth').val(),
+                fillBlanks: fillBlanks,
+                allowExtraBlanks: ['none', 'secret-word-plus-blanks'].includes($('#extra-letters').val()),
+                maxAttempts: 100,
+            });
+        } catch (error) {
+            $('#result-message').text(`😞 ${error}, try to specify less ones`).css({color: 'red'});
+            return;
+        }
+        wordfind.print(game);
+        if (window.game) {
+            var emptySquaresCount = WordFindGame.emptySquaresCount();
+            $('#result-message').text(`😃 ${emptySquaresCount ? 'but there are empty squares' : ''}`).css({color: ''});
+        }
+        window.game = game;
+    }
+    recreate();
+
+    /* Event listeners */
+    $('#extra-letters').change((evt) => $('#secret-word').prop('disabled', !evt.target.value.startsWith('secret-word')));
+
+    $('#add-word').click( () => WordFindGame.insertWordBefore($('#add-word').parent()));
+
+    $('#create-grid').click(recreate);
+
+    $('#solve').click(() => game.solve());
+
+
+    </script>
+</body>
+</html>
