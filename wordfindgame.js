@@ -231,7 +231,11 @@
           $('.selected').addClass('found');
           wordList.splice(i,1);
           wordListCount = wordListCount - 1
-          totalWords = totalWords - 1
+          // totalWords = totalWords - 1
+          var twlStatus = document.getElementById("totalWordsLeft");//.value//300;
+          var twl = parseInt(twlStatus.innerHTML)
+          twl = twl - 1
+          twlStatus.textContent = twl
           $('input.word[value="' + curWord + '"]').addClass('wordFound');
         }
 
@@ -321,7 +325,7 @@
         var data = {}
         // console.log(counter.innerHTML)
         if( puzzleOngoing == true ) {
-          setInterval(function() {
+          var check = setInterval(function() {
               console.log("JUJUJUJUJUJ")
               console.log(wordList)
               console.log(counter)
@@ -348,7 +352,7 @@
               var twl = parseInt(twlStatus.innerHTML)
               
               if( parseInt(pss) > 0) {
-                clearInterval(counter);
+                clearInterval(check);
                 document.getElementById('id03').style.display='block'
 
                   data = {
@@ -371,7 +375,7 @@
               else if(twl === 0) {
 
               // else if(wordList.length === 0) {
-                clearInterval(counter);
+                clearInterval(check);
                 document.getElementById('id01').style.display='block'
 
                   data = {
@@ -397,7 +401,7 @@
                     document.getElementById("count").textContent=counter;
                   }
                   if (counter === 0) {
-                      clearInterval(counter);
+                      clearInterval(check);
                       document.getElementById('id02').style.display='block'
                       
                       data = {
