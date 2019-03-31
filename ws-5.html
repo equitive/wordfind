@@ -8,13 +8,13 @@
     <link rel="stylesheet" type="text/css" href="wordfind.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script type="text/javascript" src="debugout.js"></script>
 
-</head>
 <body>
-    <h1>WordFind.js</h1>
+<h1>WordFind.js</h1>
     <div id="main" role="main">
         <div id="puzzle"></div>
         <ul id="words">
@@ -23,8 +23,8 @@
     </div>
     <br>
     <div id="main" >
-        <span id="count">600</span> seconds
-        <span id="totalWords">5</span> seconds
+        <span id="count">15</span> seconds
+        <span id="totalWords">3</span> seconds
 
         <span id="wordSkipCount">0</span> words
         <span id="puzzleSkipCount">0</span> puzzle
@@ -32,7 +32,6 @@
         <span id="wlCount"></span> word list count
 
         <button href="#" id="startClock" type="button" class=" btn btn-success startButton">Start</button>
-
 
         <button href="#" id="skipWord" type="button" onclick="skipWord()" class=" btn btn-success skipWord">Skip Word</button>
         <button href="#" id="skipPuzzle" type="button" onclick="skipPuzzle()" class=" btn btn-success skipPuzzle">Skip Puzzle</button>
@@ -46,20 +45,21 @@
             <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
             <br>
             <br>
-            <p>You have completed the puzzle. Press OK to move on to the next one."</p>
+            <p>Congratulations, you completed the puzzle. Press OK to move on to the next one."</p>
             <br>
-            <!-- <a href="ws-3.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
-            <form action="ws-3.html" method="get">
-                <input type="text" id="pid" name="pid" required value = "3"/><br>
+            <form action="end.html" method="get">
+                <input type="text" id="pid" name="pid" required value = "0"/><br>
                 <input type="text" id="uid1" name="uid" required/>
                 <input type="submit" type="button" class=" btn btn-success" value="Next Puzzle"/>
                 <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
             </form>
-            <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-3.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
+            <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
+
+            <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
             </div>
         </div>
     </div>
-    
+
     <div id="id02" class="w3-modal">
         <div class="w3-modal-content">
             <div class="w3-container">
@@ -68,40 +68,40 @@
             <br>
             <p>Sorry, time ran out for the puzzle. Press OK to move on to the next one."</p>
             <br>
-            <!-- <a href="ws-3.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
-            <form action="ws-3.html" method="get">
-                <input type="text" id="pid" name="pid" required value = "3"/><br>
+            <form action="end.html" method="get">
+                <input type="text" id="pid" name="pid" required value = "0"/><br>
                 <input type="text" id="uid2" name="uid" required/>
                 <input type="submit" type="button" class=" btn btn-success" value="Next Puzzle"/>
                 <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
             </form>
-            <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-3.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
+
+            <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
             </div>
         </div>
     </div>
 
     <div id="id03" class="w3-modal">
-            <div class="w3-modal-content">
-                <div class="w3-container">
-                <span onclick="document.getElementById('id03').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <br>
-                <br>
-                <p>You've skipped this puzzle! Press OK to move on to the next one."</p>
-                <br>
-                <form action="ws-2.html" method="get">
-                    <input type="text" id="pid" name="pid" required value = "3"/><br>
-                    <input type="text" id="uid3" name="uid" required/>
-                    <input type="submit" type="button" class=" btn btn-success" value="Next Puzzle"/>
-                    <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
-                </form>
-    
-                <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
-                </div>
+        <div class="w3-modal-content">
+            <div class="w3-container">
+            <span onclick="document.getElementById('id03').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <br>
+            <br>
+            <p>You've skipped this puzzle! Press OK to move on to the next one."</p>
+            <br>
+            <form action="end.html" method="get">
+                <input type="text" id="pid" name="pid" required value = "0"/><br>
+                <input type="text" id="uid3" name="uid" required/>
+                <input type="submit" type="button" class=" btn btn-success" value="Next Puzzle"/>
+                <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
+            </form>
+
+            <!-- <a href="file:///Users/ruthpetit-bois/Projects/IntroCogSci/wordfind/ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Next Puzzle</button></a> -->
             </div>
         </div>
+    </div>
     
     <div id="pid">
-        <span id="puzzleID">2</span>
+        <span id="puzzleID">5</span>
     </div>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
@@ -114,26 +114,38 @@
     var url = new URL(url_string);
     var uid = url.searchParams.get("uid");
     var pid = url.searchParams.get("pid");
+    console.log("Why are you not...." + uid)
     document.getElementById("uid1").value = uid;
     document.getElementById("uid2").value = uid;
     document.getElementById("uid3").value = uid;
-    document.getElementById("pid").value = 3;
+    document.getElementById("pid").value = 0;
 
     console.log(uid);
     console.log(pid);
 
     /* Example words setup */
     [
-        'persist',
-        "stick",
-        "dedicate",
-        "achieve",
-        "hustle"
+        'Adamant', 
+        'Relentless', 
+        'Effort', 
+        'Encourage', 
+        'Thorough',
+        'Resolve', 
+        'Tireless', 
+        'Steady' 
+
     ].map(word => WordFindGame.insertWordBefore($('#add-word').parent(), word));
-    $('#secret-word').val('IMNKNMKNKBIBGUUIHUINJKNJIGUKBJKBJKB');
+    $('#secret-word').val('LAETIRSNJKNUGYHJIODNCKIDNEQWCOIREHCQUERCOQUBERNCJVNRIUVOUEBNQJFOVBNR@FUOHRFUO#$F');
     $('#id01').css('display', 'none')
     $('#id02').css('display', 'none')
     $('#id03').css('display', 'none')
+
+    // <button href="#" id="skipWord" type="button" onclick="skipWord()" class=" btn btn-success skipWord">Skip Word</button>
+    //     <button href="#" id="skipPuzzle" type="button" onclick="skipPuzzle()" class=" btn btn-success skipPuzzle">Skip Puzzle</button>
+    //     <button href="#" id="doesNotExist" type="button" onclick="doesNotExist()" class=" btn btn-success doesNotExist">Does Not Exist</button>
+    // <span id="wordSkipCount">0</span> words
+    //     <span id="puzzleSkipCount">0</span> puzzle
+    //     <span id="doesNotExistCount">0</span> count
 
     /* Init */
     function recreate() {
@@ -149,9 +161,22 @@
         $('#pid').css('display', 'none')
 
         try {
+            // var puzzle = [[F, H, D, E, D],
+	        //           [N, U, Y, K, K],
+            //           [D, N, I, R, G],
+            //           [K, U, F, J, T],
+            //           [H, K, J, L, L]
+            //         ]
+            // game = new WordFindGame(puzzle, {
+            //     allowedMissingWords: +0,//$('#allowed-missing-words').val(),
+            //     maxGridGrowth: +2,//+$('#max-grid-growth').val(),
+            //     fillBlanks: fillBlanks,
+            //     allowExtraBlanks: ['none', 'secret-word-plus-blanks'].includes($('#extra-letters').val()),
+            //     maxAttempts: 100,
+            // });
             game = new WordFindGame('#puzzle', {
                 allowedMissingWords: +0,//$('#allowed-missing-words').val(),
-                maxGridGrowth: +2,//$('#max-grid-growth').val(),
+                maxGridGrowth: +2,//+$('#max-grid-growth').val(),
                 fillBlanks: fillBlanks,
                 allowExtraBlanks: ['none', 'secret-word-plus-blanks'].includes($('#extra-letters').val()),
                 maxAttempts: 100,
@@ -177,6 +202,8 @@
     $('#create-grid').click(recreate);
 
     $('#solve').click(() => game.solve());
+
+
     </script>
 </body>
 </html>

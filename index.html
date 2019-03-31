@@ -16,8 +16,17 @@
 <body>
     <h1>Experiment</h1>
     <div id="main" role="main">
-        <a href="ws-1.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a>
+        <form action="ws-1.html" method="get">
 
+            <label for="name">Please enter the Study ID:</label><br>
+            
+            <input type="text" id="uid" name="uid" required minlength="4" maxlength="8" size="10"/><br>
+            <input type="hidden" id="pid" name="pid" required value = "1"  />
+
+            <input type="submit" value="Submit"/>
+
+        <!-- <a href="ws-1.html?uid=Ruth&pid=1"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
+        </form>
 
     </div>
 
