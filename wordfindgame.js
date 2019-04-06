@@ -11,6 +11,12 @@
 
   var bugout = new debugout();
   self.logFilename = 'log.txt';
+  var listOfWords = []
+  var wordsFound = 0
+  var puzzleOngoing = false
+
+  var wordTime
+  var startTime = Date.now()
 
   /**
   * An example game using the puzzles created from wordfind.js. Click and drag
@@ -47,6 +53,7 @@
     };
 
     var getWords = function () {
+
       return $('input.word').toArray().map(wordEl => wordEl.value.toLowerCase()).filter(word => word);
     };
 
@@ -106,10 +113,12 @@
     *
     */
     var startTurn = function () {
+      if(puzzleOngoing == true) {
       $(this).addClass('selected');
       startSquare = this;
       selectedSquares.push(this);
       curWord = $(this).text();
+      }
     };
     
     var touchMove = function(e) {
@@ -224,37 +233,136 @@
     *
     */
     var endTurn = function () {
-      // see if we formed a valid word
-      for (var i = 0, len = wordList.length; i < len; i++) {
-        
-        if (wordList[i] === curWord) {
-          $('.selected').addClass('found');
-          wordList.splice(i,1);
-          wordListCount = wordListCount - 1
-          // totalWords = totalWords - 1
-          var twlStatus = document.getElementById("totalWordsLeft");//.value//300;
-          var twl = parseInt(twlStatus.innerHTML)
-          twl = twl - 1
-          twlStatus.textContent = twl
-          $('input.word[value="' + curWord + '"]').addClass('wordFound');
+        // see if we formed a valid word
+        var word_data = {}
+
+        for (var i = 0, len = wordList.length; i < len; i++) {
+          
+          if (wordList[i] === curWord) {
+            $('.selected').addClass('found');
+
+            var url_string = window.location.href
+            var url = new URL(url_string);
+            var uid = url.searchParams.get("uid");
+            var pid = url.searchParams.get("pid");
+
+            word_data = {
+              user: uid,
+              puzzle: pid,
+              time: wordTime,
+              word: listOfWords[wordIndex],
+              skipped: 0,
+              timestamp: Date.now()
+            };
+      
+            $.post("words.php", word_data);
+
+
+            startTime = Date.now()
+
+
+            wordList.splice(i,1);
+            wordListCount = wordListCount - 1
+
+            var index = listOfWords.indexOf(curWord);
+            if (index !== -1) listOfWords.splice(index, 1);
+            
+            var twStatus = document.getElementById("totalWords");//.value//300;
+            var tw = parseInt(twStatus.innerHTML)
+
+            var twlStatus = document.getElementById("totalWordsLeft");//.value//300;
+            var twl = parseInt(twlStatus.innerHTML)
+
+            var wiStatus = document.getElementById("wordIndex");//.value//300;
+            var wi = parseInt(wiStatus.innerHTML)
+
+            $("#displayWord").append($("<li>").text(listOfWords[wi]));
+            twl = twl - 1
+            twlStatus.textContent = twl
+
+            wordsFound = wordsFound + 1
+
+            $('input.word[value="' + curWord + '"]').addClass('wordFound');
+          }
+
+          if (wordList.length === 0) {
+            $('.puzzleSquare').addClass('complete');
+          }
         }
 
-        if (wordList.length === 0) {
-          $('.puzzleSquare').addClass('complete');
-        }
-      }
-
-      // reset the turn
-      $('.selected').removeClass('selected');
-      startSquare = null;
-      selectedSquares = [];
-      curWord = '';
-      curOrientation = null;
+        // reset the turn
+        $('.selected').removeClass('selected');
+        startSquare = null;
+        selectedSquares = [];
+        curWord = '';
+        curOrientation = null;
     };
 
     jQuery(function($){
       $('#startClock').on('click', doCount);
+
+      $('#skipWord').on('click', skipThatWord);
+
+
     });
+
+    function skipThatWord(){
+      var word_data = {}
+
+      console.log("Yo yo hujfdtryj")
+      // console.log(wordList)
+      // console.log(listOfWords)
+      // wordList = wordList.slice(1)
+      console.log(wordList)
+      console.log(wordIndex + "WORD INDEX")
+      var url_string = window.location.href
+      var url = new URL(url_string);
+      var uid = url.searchParams.get("uid");
+      var pid = url.searchParams.get("pid");
+
+      var wiStatus = document.getElementById("wordIndex");//.value//300;
+      var wi = parseInt(wiStatus.innerHTML)
+
+      word_data = {
+        user: uid,
+        puzzle: pid,
+        time: wordTime,
+        word: listOfWords[wordIndex],
+        skipped: 1,
+        timestamp: Date.now()
+      };
+
+      $.post("words.php", word_data);
+
+      console.log(listOfWords[wi])
+      console.log(wordList[wi])
+
+      
+
+      startTime = Date.now()
+
+      var index = wordList.indexOf(listOfWords[wordIndex]);
+      if (index !== -1) wordList.splice(index, 1);
+
+
+      // if(wi != wordIndex) {
+        // wordIndex = wi
+        // $("#displayWord").append($("<li>").text(listOfWords[wi]));
+      // }
+
+      // console.log( "hjg,mfndchjk.h,gmcfnx" + wordList[wordIndex])
+
+      // var wiStatus = document.getElementById("wordIndex");//.value//300;
+      // var wi = parseInt(wiStatus.innerHTML)
+      // wi = wi + 1
+      // wiStatus.textContent = wi;
+
+      console.log("STIO")
+
+      console.log(wordList)
+
+    };
+
 
     // function skipWord() {
     //   console.log("Skipped this word")
@@ -289,35 +397,87 @@
     //     input.textContent = wsc+1;
     // }
 
+    function startWordTimer() {
+      // startTime = Date.now();
+
+      var interval = setInterval(function() {
+          var elapsedTime = Date.now() - startTime;
+          // document.getElementById("timer").innerHTML = (elapsedTime / 1000).toFixed(3);
+          wordTime = (elapsedTime / 1000).toFixed(3);
+
+      }, 100);
+
+    }
+
     function doCount(){
+      $("#skipWord").attr("disabled", false);
+      $("#skipPuzzle").attr("disabled", false);
+
       console.log(document.getElementById("count"))
         var input = document.getElementById("count");//.value//300;
         var counter = input.innerHTML
 
-        var puzzleOngoing = true
-        // var wlcountinput = document.getElementById("totalWordsLeft");//document.getElementById("wlCount");//.value//300;
-        // var wlc = parseInt(wlcountinput.innerHTML)
+        // var puzzleOngoing = true
+        puzzleOngoing = true
 
-        // console.log("word list count " + wordListCount)
-        // wlcountinput.textContent = totalWords//wordListCount;
-        // var wlc = parseInt(input.innerHTML)
-        // wordListCount
-
-
-        // var pInput = document.getElementById("puzzleID");//.value//300;
-        // var pid = input.innerHTML
-        
-        // var uInput = document.getElementById("userID");//.value//300;
-        // var uid = input.innerHTML
-
-        // console.log(uid)
-        // console.log(pid)
 
         var url_string = window.location.href
         var url = new URL(url_string);
         var uid = url.searchParams.get("uid");
         var pid = url.searchParams.get("pid");
+        // $("#displayWord").append($("<li>").text(wordList[wordIndex]));
 
+        if(parseInt(pid) == 1) {
+          listOfWords = [
+            'dig',
+            'grind',
+            'try'
+          ]
+        } else if (parseInt(pid) == 2) {
+          listOfWords = [
+            'persist',
+            "stick",
+            "dedicate",
+            "achieve",
+            "hustle"
+          ]
+        } else if (parseInt(pid) == 3) {
+          listOfWords = [
+            'commit',
+            'sweat',
+            'work',
+            'endure',
+            'proceed',
+            'devote',
+            'determined'
+          ]
+        } else if (parseInt(pid) == 4) {
+          listOfWords = [
+            'strive', 
+            'unwavering',
+            'pursue',
+            'diligent', 
+            'driven',
+            'decided', 
+            'discover', 
+            'fixed',
+            'focus' 
+          ]
+        } else if (parseInt(pid) == 5) {
+          listOfWords = [
+            'adamant', 
+            'continue',
+            'relentless', 
+            'effort', 
+            'encourage', 
+            'thorough',
+            'resolve', 
+            'set',
+            'studious',
+            'tireless', 
+            'steady' 
+          ]
+        }
         console.log(uid);
         console.log(pid);
         console.log("Let s gooooo")
@@ -325,7 +485,10 @@
         var data = {}
         // console.log(counter.innerHTML)
         if( puzzleOngoing == true ) {
+          startWordTimer()
+
           var check = setInterval(function() {
+
               console.log("JUJUJUJUJUJ")
               console.log(wordList)
               console.log(counter)
@@ -344,12 +507,22 @@
               var wordSkippedStatus = document.getElementById("wordSkipCount");//.value//300;
               var wsc = parseInt(wordSkippedStatus.innerHTML)
 
+              var wiStatus = document.getElementById("wordIndex");//.value//300;
+              var wi = parseInt(wiStatus.innerHTML)
 
-              var doesNotExistStatus = document.getElementById("doesNotExistCount");//.value//300;
-              var dnec = parseInt(doesNotExistStatus.innerHTML)
+              if(wi != wordIndex) {
+                wordIndex = wi
+                $("#displayWord").append($("<li>").text(listOfWords[wi]));
+                startTime = Date.now()
+              }
+
+              // var doesNotExistStatus = document.getElementById("doesNotExistCount");//.value//300;
+              // var dnec = parseInt(doesNotExistStatus.innerHTML)
 
               var twlStatus = document.getElementById("totalWordsLeft");//.value//300;
               var twl = parseInt(twlStatus.innerHTML)
+
+              console.log("WORD FOUNDDDDDDD " + wordsFound)
               
               if( parseInt(pss) > 0) {
                 clearInterval(check);
@@ -364,7 +537,7 @@
                       words_in_puzzle: totalWordsStart,
                       puzzle_skipped: pss,
                       words_skipped: wsc,
-                      does_not_exist: dnec,
+                      words_found: wordsFound,
 
                       timestamp: Date.now()
                   };
@@ -387,7 +560,7 @@
                     words_in_puzzle: totalWordsStart,
                     puzzle_skipped: pss,
                     words_skipped: wsc,
-                    does_not_exist: dnec,
+                    words_found: wordsFound,
 
                     timestamp: Date.now()
                   };
@@ -397,6 +570,7 @@
 
               } else {
                   counter--;
+                  wordTime = wordTime + 1
                   if (counter >= 0) {
                     document.getElementById("count").textContent=counter;
                   }
@@ -413,8 +587,8 @@
                         words_in_puzzle: totalWordsStart,
                         puzzle_skipped: pss,
                         words_skipped: wsc,
-                        does_not_exist: dnec,
-    
+                        words_found: wordsFound,
+
                         timestamp: Date.now()
                       };
               
@@ -443,12 +617,14 @@
     $('input.word').removeClass('wordFound');
 
     // Class properties, game initial config:
-    wordList = getWords().sort();
+    wordList = getWords()//.sort();
+
     puzzle = wordfind.newPuzzleLax(wordList, options);
     var wordListCount = wordList.length
     var totalWordsInput = document.getElementById("totalWords");//.value//300;
     var totalWords = parseInt(totalWordsInput.innerHTML)
     var totalWordsStart = parseInt(totalWordsInput.innerHTML)
+    var wordIndex
 
     // Draw all of the words
     drawPuzzle(puzzleEl, puzzle);

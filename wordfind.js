@@ -82,6 +82,12 @@
       diagonalUpBack: function(x,y,l) { return {x: l-1, y: x>=l-1?y+1:y  }; }
     };
 
+    var seed = 1;
+    function random() {
+        var x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+
     /**
     * Initializes the puzzle and places words in the puzzle one at a time.
     *
@@ -136,7 +142,7 @@
       }
 
       // select a location at random and place the word there
-      var sel = locations[Math.floor(Math.random() * locations.length)];
+      var sel = locations[Math.floor(random() * locations.length)];
       placeWord(puzzle, word, sel.x, sel.y, orientations[sel.orientation]);
 
       return true;
@@ -338,7 +344,7 @@
           fillBlanks:       opts.fillBlanks !== undefined ? opts.fillBlanks : true,
           allowExtraBlanks: opts.allowExtraBlanks !== undefined ? opts.allowExtraBlanks : true,
           maxAttempts:      opts.maxAttempts || 3,
-          maxGridGrowth:    opts.maxGridGrowth !== undefined ? opts.maxGridGrowth : 10,
+          maxGridGrowth:    opts.maxGridGrowth !== undefined ? opts.maxGridGrowth : 15,
           preferOverlap:    opts.preferOverlap !== undefined ? opts.preferOverlap : true
         };
 
@@ -371,7 +377,7 @@
                 lettersToAdd = options.fillBlanks.toLowerCase().split('');
                 extraLetterGenerator = () => lettersToAdd.pop() || (fillingBlanksCount++ && '');
             } else {
-                extraLetterGenerator = () => LETTERS[Math.floor(Math.random() * LETTERS.length)];
+                extraLetterGenerator = () => LETTERS[Math.floor(random() * LETTERS.length)];
             }
             var extraLettersCount = this.fillBlanks({puzzle, extraLetterGenerator: extraLetterGenerator});
             if (lettersToAdd && lettersToAdd.length) {

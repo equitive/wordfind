@@ -15,33 +15,38 @@
 
     </head>
 
-<body>
+<body >
+        <!-- <img src="img/bg.png" id="bg" alt=""> -->
+
 <h1>WordFind.js</h1>
     <div id="main" role="main">
         <div id="puzzle"></div>
+        <ul id="displayWord">
+            
+        </ul>
         <ul id="words">
             <li><button id="add-word">Add word</button></li>
         </ul>
     </div>
     <br>
     <div id="main" >
-        <span id="count">120</span> seconds
-        <span id="totalWords">3</span> seconds
-        <span id="totalWordsLeft">3</span> seconds
-
-        <span id="wordSkipCount">0</span> words
-        <span id="puzzleSkipCount">0</span> puzzle
-        <span id="doesNotExistCount">0</span> count
-        <span id="wlCount"></span> word list count
-
         <button href="#" id="startClock" type="button" class=" btn btn-success startButton">Start</button>
 
-        <button href="#" id="skipWord" type="button" onclick="skipWord()" class=" btn btn-success skipWord">Skip Word</button>
-        <button href="#" id="skipPuzzle" type="button" onclick="skipPuzzle()" class=" btn btn-success skipPuzzle">Skip Puzzle</button>
-        <button href="#" id="doesNotExist" type="button" onclick="doesNotExist()" class=" btn btn-success doesNotExist">Does Not Exist</button>
-
+        <button href="#" id="skipWord" type="button" onclick="skipWord()" class=" btn btn-success skipWord" disabled >Skip Word</button>
+        <button href="#" id="skipPuzzle" type="button" onclick="skipPuzzle()" class=" btn btn-success skipPuzzle" disabled>Skip Puzzle</button>
+        <!-- <button href="#" id="doesNotExist" type="button" onclick="doesNotExist()" class=" btn btn-success doesNotExist">Does Not Exist</button> -->
     </div>
+    <div id = "expdata">
+            <span id="count">120</span> seconds <br>
+            <span id="totalWords">3</span> total words in puzzle<br>
+            <span id="totalWordsLeft">3</span> words left to find <br>
 
+            <span id="wordSkipCount">0</span> words skipped <br>
+            <span id="puzzleSkipCount">0</span> puzzle skipped <br>
+
+            <span id="wordIndex">0</span> index in list
+            <span id="wlCount"></span> word list count <br>
+        </div>
     <div id="id01" class="w3-modal">
         <div class="w3-modal-content">
             <div class="w3-container">
@@ -51,8 +56,11 @@
             <p>You have completed the puzzle. Press OK to move on to the next one."</p>
             <br>
             <form action="ws-2.html" method="get">
+                <div id ="user01">
+
                 <input type="text" id="pid" name="pid" required value = "2"/><br>
                 <input type="text" id="uid1" name="uid" required/>
+                </div>
                 <input type="submit" type="button" class=" btn btn-success" value="Next Puzzle"/>
                 <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
             </form>
@@ -72,8 +80,10 @@
             <p>Sorry, time ran out for the puzzle. Press OK to move on to the next one."</p>
             <br>
             <form action="ws-2.html" method="get">
+                <div id ="user02">
                 <input type="text" id="pid" name="pid" required value = "2"/><br>
                 <input type="text" id="uid2" name="uid" required/>
+                </div>
                 <input type="submit" type="button" class=" btn btn-success" value="Next Puzzle"/>
                 <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
             </form>
@@ -92,8 +102,11 @@
             <p>You've skipped this puzzle! Press OK to move on to the next one."</p>
             <br>
             <form action="ws-2.html" method="get">
+                    <div id ="user03">
+
                 <input type="text" id="pid" name="pid" required value = "2"/><br>
                 <input type="text" id="uid3" name="uid" required/>
+                </div>
                 <input type="submit" type="button" class=" btn btn-success" value="Next Puzzle"/>
                 <!-- <a href="ws-2.html"><button id="nextPage" type="button" class=" btn btn-success">Start Experiment</button></a> -->
             </form>
@@ -133,6 +146,7 @@
         'try'
     ].map(word => WordFindGame.insertWordBefore($('#add-word').parent(), word));
     $('#secret-word').val('LAETIRSNJKNUGYHJ');
+    $('#expdata').css('display', 'none')
 
     // <button href="#" id="skipWord" type="button" onclick="skipWord()" class=" btn btn-success skipWord">Skip Word</button>
     //     <button href="#" id="skipPuzzle" type="button" onclick="skipPuzzle()" class=" btn btn-success skipPuzzle">Skip Puzzle</button>
@@ -151,9 +165,19 @@
       twl = parseInt(wlcountinput.innerHTML) - 1
       wlcountinput.textContent = twl;
 
+
+      var wiStatus = document.getElementById("wordIndex");//.value//300;
+      var wi = parseInt(wiStatus.innerHTML)
+      wi = wi + 1
+      wiStatus.textContent = wi;
+
+
+
+
     //   totalWords = totalWords - 1
 
       input.textContent = wsc+1;
+      wiStatus.textContent = wi
 
         
     }
@@ -165,19 +189,19 @@
 
         input.textContent = psc+1;
     }
-    function doesNotExist() {
-        console.log(" this word does not exist")
+    // function doesNotExist() {
+    //     console.log(" this word does not exist")
 
-        var input = document.getElementById("doesNotExistCount");//.value//300;
-        var wsc = parseInt(input.innerHTML)
+    //     var input = document.getElementById("doesNotExistCount");//.value//300;
+    //     var wsc = parseInt(input.innerHTML)
 
-        var wlcountinput = document.getElementById("totalWordsLeft");//.value//300;
-        twl = parseInt(wlcountinput.innerHTML) - 1
-        wlcountinput.textContent = twl;
-        // totalWords = totalWords - 1
+    //     var wlcountinput = document.getElementById("totalWordsLeft");//.value//300;
+    //     twl = parseInt(wlcountinput.innerHTML) - 1
+    //     wlcountinput.textContent = twl;
+    //     // totalWords = totalWords - 1
 
-        input.textContent = wsc+1;
-    }
+    //     input.textContent = wsc+1;
+    // }
 
     /* Init */
     function recreate() {
@@ -191,6 +215,10 @@
         $('#add-word').css('display', 'none')
         $('#words').css('display', 'none')
         $('#pid').css('display', 'none')
+        $('#expdata').css('display', 'none')
+        $('#user01').css('display', 'none')
+        $('#user02').css('display', 'none')
+        $('#user03').css('display', 'none')
 
         try {
             // var puzzle = [[F, H, D, E, D],
@@ -207,6 +235,8 @@
             //     maxAttempts: 100,
             // });
             game = new WordFindGame('#puzzle', {
+                height: 5,
+                width: 5,
                 allowedMissingWords: +0,//$('#allowed-missing-words').val(),
                 maxGridGrowth: +2,//+$('#max-grid-growth').val(),
                 fillBlanks: fillBlanks,
